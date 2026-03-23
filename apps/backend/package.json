@@ -1,0 +1,48 @@
+{
+  "name": "backend",
+  "type": "module",
+  "scripts": {
+    "build": "nitro build",
+    "dev": "nitro dev",
+    "preview": "nitro preview"
+  },
+  "imports": {
+    "#*": "./*"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10",
+    "jiti": "^2.6.1",
+    "nitro": "latest"
+  },
+  "nx": {
+    "namedInputs": {
+      "sourceFiles": [
+        "{projectRoot}/**/*.ts",
+        "!{projectRoot}/**/*.spec.ts"
+      ],
+      "packageJson": [
+        "{projectRoot}/package.json"
+      ],
+      "tsconfig": [
+        "{projectRoot}/tsconfig.json"
+      ]
+    },
+    "targets": {
+      "build": {
+        "inputs": [
+          "sourceFiles",
+          "tsconfig",
+          "packageJson"
+        ],
+        "outputs": [
+          "{workspaceRoot}/dist/{projectName}/.output"
+        ],
+        "cache": true
+      }
+    }
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.20.0"
+  }
+}
