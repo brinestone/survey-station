@@ -16,5 +16,6 @@ public class FormSubmission<TKey> : BaseEntity<TKey> where TKey : struct, IEquat
     // [ForeignKey(nameof(FormVersionId))]
     public virtual FormVersion<TKey>? FormVersion { get; set; }
     // [ForeignKey(nameof(FormId))]
-    public virtual FormDefinition<TKey>? FormDefinition { get; set; }
+    public virtual FormDefinition<TKey>? Form { get; set; }
+    public virtual IList<FormSubmissionResponse<TKey>> Responses { get; set; } = [];
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SurvStation.Infra.Contexts;
@@ -12,9 +13,11 @@ using SurvStation.Infra.Contexts;
 namespace SurvStation.Infra.Migrations
 {
     [DbContext(typeof(FormsContext<Guid>))]
-    partial class FormsContextModelSnapshot : ModelSnapshot
+    [Migration("20260412202632_AddSubmissionModels")]
+    partial class AddSubmissionModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

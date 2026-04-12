@@ -11,12 +11,84 @@ namespace SurvStation.Infra.Contexts;
 
 public class FormsContext<TKey>(DbContextOptions<FormsContext<TKey>> options) : DbContext(options) where TKey : struct, IEquatable<TKey>
 {
-    public DbSet<FormDefinition<TKey>> Forms { get; set; }
-    public DbSet<FormVersion<TKey>> FormVersions { get; set; }
+    public virtual DbSet<FormDefinition<TKey>> Forms { get; set; }
+    public virtual DbSet<FormVersion<TKey>> FormVersions { get; set; }
+    public virtual DbSet<FormSubmission<TKey>> Submissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
         base.OnModelCreating(mb);
+
+        #region FormSubmissionResponse
+        mb.Entity<FormSubmissionResponse<TKey>>(b =>
+        {
+            b.ToTable("form_submission_responses");
+            ConfigureBase(b);
+
+            b.HasAlternateKey(
+                nameof(FormSubmissionResponse<>.SubmissionId),
+                nameof(FormSubmissionResponse<>.FormId),
+                nameof(FormSubmissionResponse<>.FormVersionId),
+                nameof(FormSubmissionResponse<>.FormItemId)
+            );
+
+            b.HasOne(e => e.Submission)
+            .WithMany(e => e.Responses)
+            .HasForeignKey(e => e.SubmissionId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(e => e.Form)
+            .WithMany()
+            .HasForeignKey(e => e.FormId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(e => e.FormVersion)
+            .WithMany()
+            .HasForeignKey(e => e.FormVersionId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(e => e.FormItem)
+            .WithMany()
+            .HasForeignKey(e => e.FormVersionId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
+
+            b.Property(e => e.Value)
+            .HasColumnType("bytea");
+        });
+        #endregion
+
+        #region FormSubmission
+        mb.Entity<FormSubmission<TKey>>(b =>
+        {
+            b.ToTable("form_submissions");
+            ConfigureBase(b);
+
+            b.HasAlternateKey(e => e.Index);
+            b.Property(e => e.Index).ValueGeneratedOnAdd();
+
+            b.HasOne(e => e.FormVersion)
+            .WithMany()
+            .HasForeignKey(e => e.FormVersionId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+            b.HasOne(e => e.Form)
+            .WithMany()
+            .HasForeignKey(e => e.FormId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+            b.HasMany(e => e.Responses)
+            .WithOne(e => e.Submission)
+            .HasForeignKey(e => e.SubmissionId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.NoAction);
+        });
+        #endregion
 
         #region FormItem
         mb.Entity<FormItem<TKey>>(b =>
