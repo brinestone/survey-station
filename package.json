@@ -1,18 +1,25 @@
 {
-  "name": "@org/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {},
-  "private": true,
+  "name": "survey-station",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "dev:api": "dotnet watch --project apps\\SurvStation.Api",
+    "migrate:up": "pwsh .\\migrate.ps1",
+    "migrate:down": "pwsh .\\migrate.ps1 -Up $false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.1",
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
   "devDependencies": {
-    "@nx/angular": "^22.6.1",
-    "@nx/js": "22.6.1",
-    "@swc-node/register": "1.11.1",
-    "@swc/core": "1.15.8",
-    "@swc/helpers": "0.5.18",
-    "nx": "22.6.1",
-    "prettier": "^2.6.2",
-    "tslib": "^2.3.0",
-    "typescript": "~5.9.2"
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1",
+    "typescript": "^6.0.2"
   }
 }
