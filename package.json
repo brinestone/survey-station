@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev:api": "dotnet watch --project apps\\SurvStation.Api",
+    "migrate": "pwsh .\\migrate.ps1"
   },
   "keywords": [],
   "author": "",
